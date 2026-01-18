@@ -19,14 +19,14 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - macos-15
-          - macos-13
+          - macos-15-intel
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - uses: canidae-solutions/lix-quick-install-action@v3
         with:
-          lix_archives_url: https://github.com/canidae-solutions/lix-quick-install-action/releases/download/v3.0.4
-          lix_version: 2.93.3
+          lix_archives_url: https://github.com/canidae-solutions/lix-quick-install-action/releases/download/v4.0.0
+          lix_version: 2.94.0
       - uses: cachix/cachix-action@v16
         with:
           name: canidae-solutions
@@ -41,7 +41,7 @@ jobs:
         run: |
           nix build -L -f default.nix combinedArchives
           echo "result=$(readlink result)" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
           path: ${{ steps.build-lix-archives.outputs.result }}/
@@ -55,15 +55,14 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - macos-15
-          - macos-13
+          - macos-15-intel
         version:
+          - 2.94.0
           - 2.93.3
-          - 2.92.3
-          - 2.91.3
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         id: lix-archives
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
@@ -89,15 +88,14 @@ jobs:
           - ubuntu-22.04
           - ubuntu-24.04-arm
           - macos-15
-          - macos-13
+          - macos-15-intel
         version:
+          - 2.94.0
           - 2.93.3
-          - 2.92.3
-          - 2.91.3
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         id: lix-archives
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
@@ -133,26 +131,26 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: lix-archives-Linux-X64
           path: /tmp/archives
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: lix-archives-Linux-ARM64
           path: /tmp/archives
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: lix-archives-macOS-X64
           path: /tmp/archives
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: lix-archives-macOS-ARM64
           path: /tmp/archives
       - uses: ./
         with:
           lix_archives_url: file:///tmp/archives
-          lix_version: 2.93.3
+          lix_version: 2.94.0
       - uses: cachix/cachix-action@v16
         with:
           name: canidae-solutions
