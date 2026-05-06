@@ -27,7 +27,7 @@ jobs:
         with:
           lix_archives_url: https://github.com/canidae-solutions/lix-quick-install-action/releases/download/v4.0.0
           lix_version: 2.94.0
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         with:
           name: canidae-solutions
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -41,7 +41,7 @@ jobs:
         run: |
           nix build -L -f default.nix combinedArchives
           echo "result=$(readlink result)" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
           path: ${{ steps.build-lix-archives.outputs.result }}/
@@ -62,7 +62,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         id: lix-archives
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
@@ -95,7 +95,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         id: lix-archives
         with:
           name: lix-archives-${{ runner.os }}-${{ runner.arch }}
@@ -103,7 +103,7 @@ jobs:
         with:
           lix_archives_url: file://${{steps.lix-archives.outputs.download-path}}
           lix_version: ${{ matrix.version }}
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         with:
           name: canidae-solutions
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
@@ -131,19 +131,19 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: lix-archives-Linux-X64
           path: /tmp/archives
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: lix-archives-Linux-ARM64
           path: /tmp/archives
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: lix-archives-macOS-X64
           path: /tmp/archives
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: lix-archives-macOS-ARM64
           path: /tmp/archives
@@ -151,7 +151,7 @@ jobs:
         with:
           lix_archives_url: file:///tmp/archives
           lix_version: 2.94.0
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         with:
           name: canidae-solutions
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
